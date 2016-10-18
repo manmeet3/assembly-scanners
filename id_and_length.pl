@@ -4,12 +4,15 @@ use Bio::SeqIO;
 use Getopt::Std;
 use vars qw( $opt_f );
 
+# Check opts and set input file
 my $bio_io = &init();
 
+# Prints id and length of each fragment present in fasta file
 while( $seq_o = $bio_io->next_seq() ) {
     printf("%s\t%d\n", $seq_o->display_id, $seq_o->length );
 }
 
+# Checks opts and returns an instance of the file to SeqIO module
 sub init {
     getopts( 'f:' );
     unless( -f $opt_f ) {

@@ -4,10 +4,13 @@ use Bio::SeqIO;
 use Getopt::Std;
 use vars qw( $opt_f $opt_s $opt_t $opt_m );
 
+# Initialize SeqIO library variables and check opts.
 my ($bio_io, $starts_p, $terms_p) = &init();
 my ( $seq_o, $next_start, $next_term );
 my ( @starts, @terms );
 my ( %orfs );
+
+# Search for an open reading frame (ORF) in each fragment 
 while( $seq_o = $bio_io->next_seq() ) {
     for($i = 0; $i<= 2; $i++ ) {
 	@starts = &find_codons( $seq_o, $i, $starts_p );
@@ -64,6 +67,7 @@ while( $seq_o = $bio_io->next_seq() ) {
     %orfs = ();
 }
 
+# Set initial variables and check args
 sub init {
     my $bio_io;
     my @starts;
@@ -104,7 +108,8 @@ sub init {
 
     return ( $bio_io, \@starts, \@terms );
 }
-    
+
+# Format and print details about each ORF found including its begining + end sequence 
 sub make_output {
     my $orfs_p = shift;
     my $seq_o  = shift;
@@ -132,6 +137,7 @@ sub make_output {
     }
 }
 
+# Search starting and ending codons, encapsualting the ORF, in each fragment
 sub find_codons {
     my $seq_o = shift;
     my $i     = shift;
